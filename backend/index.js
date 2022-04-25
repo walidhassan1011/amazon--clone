@@ -57,7 +57,7 @@ app.post(
     const payload = req.body;
 
     const sig = req.headers["stripe-signature"];
-    console.log("sig:", sig);
+   
     let event;
 
     try {

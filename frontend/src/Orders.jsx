@@ -23,7 +23,6 @@ function Orders() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setordersItems([...data]);
       })
       .catch((err) => {

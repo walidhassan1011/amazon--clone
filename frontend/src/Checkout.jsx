@@ -31,8 +31,6 @@ function Checkout() {
         return res.json();
       })
       .then((session) => {
-        console.log(session);
-
         window.location = session.url;
       })
       .then((result) => {
