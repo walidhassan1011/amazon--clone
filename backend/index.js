@@ -5,7 +5,7 @@ require("dotenv").config();
 const bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: false }));
 const bodyParser = require("body-parser");
-
+const moment = require("moment");
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const admin = require("firebase-admin");
 const {
@@ -87,16 +87,27 @@ app.use(
   })
 );
 
-app.get("/orders", async (req, res) => {
-  const snapshot = await db
+app.post("/orders", async (req, res) => {
+  const StripeOrders = await db
     .collection("users")
-    .doc("walidhassan009@gmail.com")
+    .doc(req?.body?.email)
     .collection("orders")
     .get();
-  const orders = [];
-  snapshot.forEach((doc) => {
-    orders.push(doc.data());
-  });
+
+  const orders = await Promise.all(
+    StripeOrders.docs.map(async (doc) => ({
+      id: doc.id,
+      amount: doc.data().amount,
+      amount_shipping: doc.data().amount_shipping,
+      images: doc.data().images,
+      timestamp: moment(doc.data().timestamp.toDate()).unix(),
+      items: (
+        await stripe.checkout.sessions.listLineItems(doc.id, {
+          limit: 100,
+        })
+      ).data,
+    }))
+  );
 
   return res.status(200).json(orders);
 });

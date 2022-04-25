@@ -5,14 +5,19 @@ import { UseFetching } from "./context/ProductsFetching";
 
 function Orders() {
   const { user } = UseFetching();
+
   const [ordersItems, setordersItems] = useState([]);
+  const body = JSON.stringify({
+    email: user?.email,
+  });
+
   useEffect(() => {
     fetch("http://localhost:8282/orders", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
       },
+      body,
     })
       .then((res) => {
         return res.json();
@@ -24,7 +29,7 @@ function Orders() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
     <div>

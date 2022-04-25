@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { UseFetching } from "../context/ProductsFetching";
+import { toast, ToastContainer } from "react-toastify";
 
 function Product({ id, title, category, image, price, description }) {
   const { setadding, adding, setitems, items } = UseFetching();
@@ -20,6 +21,15 @@ function Product({ id, title, category, image, price, description }) {
   const addtocart = () => {
     setadding(adding + 1);
     items.push(item);
+    toast.success("Added to cart", {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const currencyFormat = (num) => {
@@ -52,6 +62,17 @@ function Product({ id, title, category, image, price, description }) {
       <button className="mt-auto button" onClick={addtocart}>
         Add to Cart
       </button>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

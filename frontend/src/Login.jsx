@@ -2,7 +2,8 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { UseFetching } from "./context/ProductsFetching";
 import Error from "../src/components/Error";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Login() {
   let history = useHistory();
   const { setEmail, setPassword, error, setError, logIn, email, password } =
@@ -11,13 +12,31 @@ function Login() {
     e.preventDefault();
     try {
       await logIn(email, password);
+
+      toast.success("Logged in successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       history.push("/");
     } catch {
-      setError(true);
+      toast.error("something went wrong", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
   function handleClick() {
-    history.push("/register");
+    history.push("/signup");
   }
 
   return (
@@ -28,9 +47,6 @@ function Login() {
           alt="amazon logo"
           className="h-10  m-4"
         />
-      </div>
-      <div className=" flex items-center justify-center">
-        {error && <Error>Something Happaned in signin</Error>}
       </div>
 
       <div className="outline outline-1 outline-gray-200 mt-5  md:h-96 mx-auto md:w-96 bg-white rounded-sm flex-col items-center justify-center sm:w-80  sm:h-96 shadow-md">
@@ -84,6 +100,19 @@ function Login() {
         >
           Create Your Amazon Account
         </button>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {/* Same as */}
+        <ToastContainer />
       </div>
     </div>
   );

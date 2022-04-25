@@ -15,6 +15,7 @@
     "express": "^4.17.3",
     "firebase-admin": "^10.1.0",
     "micro": "^9.3.4",
+    "moment": "^2.29.3",
     "nodemon": "^2.0.15",
     "save": "^2.5.0",
     "stripe": "^8.219.0",

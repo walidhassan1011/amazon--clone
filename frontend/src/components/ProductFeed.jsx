@@ -1,14 +1,23 @@
 import React from "react";
 import Product from "./Product";
-import axios from "axios";
+
 import { UseFetching } from "../context/ProductsFetching";
 
 function ProductFeed() {
-  const { productslist, loading } = UseFetching();
-
+  const { productslist, loading, searchTerm, setSearchTerm } = UseFetching();
+  console.log(searchTerm);
   return (
     <div className="grid sm:grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:-mt-52 mx-auto">
       {productslist
+        ?.filter((val) => {
+          if (searchTerm === "") {
+            return val;
+          } else if (
+            val.title.toLowerCase().includes(searchTerm.toLowerCase())
+          ) {
+            return val;
+          }
+        })
         ?.slice(0, 3)
         .map(({ id, title, category, image, price, description }) => (
           <Product
@@ -29,6 +38,15 @@ function ProductFeed() {
       />
 
       {productslist
+        ?.filter((val) => {
+          if (searchTerm === "") {
+            return val;
+          } else if (
+            val.title.toLowerCase().includes(searchTerm.toLowerCase())
+          ) {
+            return val;
+          }
+        })
         ?.slice(3, 6)
         .map(({ id, title, category, image, price, description }) => (
           <Product
@@ -43,6 +61,15 @@ function ProductFeed() {
         ))}
 
       {productslist
+        ?.filter((val) => {
+          if (searchTerm === "") {
+            return val;
+          } else if (
+            val.title.toLowerCase().includes(searchTerm.toLowerCase())
+          ) {
+            return val;
+          }
+        })
         ?.slice(6, productslist.length)
         .map(({ id, title, category, image, price, description }) => (
           <Product

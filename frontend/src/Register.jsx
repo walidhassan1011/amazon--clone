@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Error from "./components/Error";
 
 import { UseFetching } from "./context/ProductsFetching";
@@ -16,9 +17,7 @@ function Register() {
           className="h-10  m-4"
         />
       </div>
-      <div className="flex items-center justify-center w-auto ">
-        {error && <Error>Something Happened in register</Error>}
-      </div>
+
       <div
         className="outline outline-2 outline-gray-200 mt-5
       shadow-md  md:h-96 mx-auto md:w-96 sm:w-80 sm:h-96 bg-white rounded-sm flex-col items-center justify-center"
@@ -59,6 +58,19 @@ function Register() {
           >
             Continue
           </button>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          {/* Same as */}
+          <ToastContainer />
         </div>
         <div class="grid grid-cols-1 divide-y-2 p-4 ">
           <div></div>

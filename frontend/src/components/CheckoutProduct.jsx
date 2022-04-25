@@ -1,5 +1,6 @@
 import { StarIcon } from "@heroicons/react/solid";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import { UseFetching } from "../context/ProductsFetching";
 
 function CheckoutProduct({
@@ -89,6 +90,17 @@ function CheckoutProduct({
         >
           Remove From Cart
         </button>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </div>
   );

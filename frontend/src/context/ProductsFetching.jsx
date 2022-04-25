@@ -4,11 +4,14 @@ import { useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../Firebase";
 import { createContext, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Fetching = createContext();
 const addtoCart = JSON.parse(localStorage.getItem("adding") || "0");
@@ -16,6 +19,7 @@ const itemsInCart = JSON.parse(localStorage.getItem("items") || "[]");
 function Productfetching({ children }) {
   const history = useHistory();
   const [productslist, setProductslist] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [adding, setadding] = useState(0);
   const [items, setitems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,24 +50,60 @@ function Productfetching({ children }) {
   const handelRequest = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        console.log(res);
+        toast.success("Logged in successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        sendEmailVerification(auth.currentUser).catch((err) => {
+          toast.error("something went wrong with email verfication", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+        history.push("/");
       })
       .catch((err) => {
-        console.log(err);
-        setError(true);
+        toast.error("something went wrong", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
-    if (email === "" || password === "") {
-      setError(true);
-      console.log(error);
-    } else {
-      setError(false);
-      setEmail("");
-      setPassword("");
-      history.push("/");
-    }
+    // if (email === "" || password === "") {
+    //   setError(true);
+    // } else {
+    //   setError(false);
+    //   setEmail("");
+    //   setPassword("");
+    //   history.push("/");
+    // }
   };
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
+  }
+
+  async function logOut() {
+    try {
+      await auth.signOut();
+      console.log("signed out");
+    } catch (err) {
+      console.log(err);
+    }
   }
   const total = () => {
     return items.reduce((acc, item) => acc + item.price, 0);
@@ -72,6 +112,7 @@ function Productfetching({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
     return () => {
       unsubscribe();
     };
@@ -92,10 +133,12 @@ function Productfetching({ children }) {
           setPassword,
           handelRequest,
           logIn,
+          logOut,
           setError,
           error,
           user,
-
+          searchTerm,
+          setSearchTerm,
           total,
         }}
       >

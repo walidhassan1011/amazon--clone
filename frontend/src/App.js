@@ -20,7 +20,7 @@ function App() {
               <Login />
             </div>
           </Route>
-          <Route exact path="/register">
+          <Route exact path="/signup">
             <div className="bg-white">
               <Register />
             </div>

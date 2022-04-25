@@ -6,6 +6,7 @@ import { UseFetching } from "./context/ProductsFetching";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 const stripePromise = loadStripe(`${process.env.PUBLISH_KEY}`);
 function Checkout() {
   const history = useHistory();
@@ -31,9 +32,7 @@ function Checkout() {
       })
       .then((session) => {
         console.log(session);
-        // return stripe.redirectToCheckout({
-        //   sessionId: session.sessionId,
-        // });
+
         window.location = session.url;
       })
       .then((result) => {
@@ -56,6 +55,15 @@ function Checkout() {
     }
 
     setitems(newbase);
+    toast.success("Item removed from cart", {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   const addmore = ({
     id,
@@ -127,7 +135,7 @@ function Checkout() {
             <>
               <h2 className="whitespace-nowrap">
                 Subtotal ({items?.length} items):
-                <span className="font-bold">{`$${sumTotal}`}</span>
+                <span className="font-bold">{`$ ${sumTotal}`}</span>
               </h2>
               <button
                 onClick={createCheckoutSession}

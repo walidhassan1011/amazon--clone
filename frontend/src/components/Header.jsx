@@ -7,7 +7,8 @@ import {
 import { UseFetching } from "../context/ProductsFetching";
 import { useHistory } from "react-router-dom";
 function Header() {
-  const { adding, email, user } = UseFetching();
+  const { adding, email, user, searchTerm, setSearchTerm, logOut } =
+    UseFetching();
 
   const history = useHistory();
   return (
@@ -32,15 +33,16 @@ function Header() {
         <div className="bg-yellow-400 hover:bg-yellow-500 md:flex sm:hidden items-center h-10 rounded-md flex-grow cursor-pointer ">
           <input
             className="p-2 h-full w-6 flex-grow flex-shrink rounded-l-md focus:outline-none px-4 "
+            onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
           />
           <SearchIcon className="p-4 h-12" />
         </div>
         {/* right */}
-        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap sm:space-x-10  ">
+        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap sm:space-x-10  truncate mt-2">
           <div className="cursor-pointer hover:underline ">
             {user ? (
-              <p className="sm:text-xs ">{user?.email}</p>
+              <p className="sm:text-xs truncate ">{user?.email}</p>
             ) : (
               <p
                 className="sm:text-xs"
@@ -53,8 +55,23 @@ function Header() {
             )}
 
             <p className=" font-extrabold sm:text-xs">account & lists</p>
+            {user && (
+              <p
+                className="cursor-pointer hover:underline "
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Sigin Out
+              </p>
+            )}
           </div>
-          <div className="cursor-pointer hover:underline">
+          <div
+            onClick={() => {
+              history.push("/orders");
+            }}
+            className="cursor-pointer hover:underline"
+          >
             <p>Returns</p>
             <p className=" font-extrabold ">&orders</p>
           </div>
