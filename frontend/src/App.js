@@ -7,6 +7,8 @@ import ProductFeed from "./components/ProductFeed";
 import Productfetching from "./context/ProductsFetching";
 import Register from "./Register";
 import Checkout from "./Checkout";
+import Success from "./Success";
+import Orders from "./Orders";
 
 function App() {
   return (
@@ -26,6 +28,16 @@ function App() {
           <Route exact path="/checkout">
             <div className="bg-white">
               <Checkout />
+            </div>
+          </Route>
+          <Route exact path="/success">
+            <div className="bg-white">
+              <Success />
+            </div>
+          </Route>
+          <Route exact path="/orders">
+            <div className="bg-white">
+              <Orders />
             </div>
           </Route>
 

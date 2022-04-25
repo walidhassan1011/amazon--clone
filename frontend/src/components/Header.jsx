@@ -13,10 +13,10 @@ function Header() {
   return (
     <header>
       {/* top */}
-      <div className="flex items-center bg-amazon_blue p-1 flex-grow py-2">
-        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
+      <div className="flex items-center bg-amazon_blue p-1 flex-grow py-2 ">
+        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 ">
           <img
-            src="https://links.papareact.com/f90"
+            src="https://jitsvinger.co.za/wp-content/uploads/2018/04/Amazon-Logo-1024x373.png"
             alt="amazon
           logo"
             onClick={() => {
@@ -25,7 +25,7 @@ function Header() {
             width={120}
             height={20}
             objectfit="contain"
-            className="cursor-pointer m-2"
+            className="cursor-pointer m-2 sm:hidden md:inline"
           />
         </div>
         {/* search */}
@@ -37,13 +37,13 @@ function Header() {
           <SearchIcon className="p-4 h-12" />
         </div>
         {/* right */}
-        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-          <div className="cursor-pointer hover:underline">
+        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap sm:space-x-10  ">
+          <div className="cursor-pointer hover:underline ">
             {user ? (
-              <p className="line-clamp-3">{user?.email}</p>
+              <p className="sm:text-xs ">{user?.email}</p>
             ) : (
               <p
-                className="line-clamp-2"
+                className="sm:text-xs"
                 onClick={() => {
                   history.push("/login");
                 }}
@@ -52,11 +52,11 @@ function Header() {
               </p>
             )}
 
-            <p className=" font-extrabold sm:text-sm">account & lists</p>
+            <p className=" font-extrabold sm:text-xs">account & lists</p>
           </div>
           <div className="cursor-pointer hover:underline">
             <p>Returns</p>
-            <p className=" font-extrabold sm:text-sm">&orders</p>
+            <p className=" font-extrabold ">&orders</p>
           </div>
           <div
             className="cursor-pointer hover:underline relative flex items-center "

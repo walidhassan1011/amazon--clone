@@ -8,19 +8,99 @@ const bodyParser = require("body-parser");
 
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const admin = require("firebase-admin");
-const { buffer, text, json } = require("micro");
+const {
+  getFirestore,
+  Timestamp,
+  FieldValue,
+} = require("firebase-admin/firestore");
 const serviceAccount = require("./permissions.json");
+
 const firebaseApp = !admin.apps.length
   ? admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     })
   : admin.app();
-const endpointsecret = process.env.WEBHOOK_SIGNIN;
-app.use(express.json());
+const db = getFirestore();
 app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+const endpointsecret = `whsec_2eaaa9ee72833c820fa3bd19a3f9a30f432d6d1b059e03a3fd5e64a72ec63549`;
+
+const fulfilOrder = async (session) => {
+  return firebaseApp
+    .firestore()
+    .collection("users")
+    .doc(session.metadata.email)
+    .collection("orders")
+    .doc(session.id)
+    .set({
+      amount: session.amount_total / 100,
+      amount_shipping: session.total_details.amount_shipping / 100,
+      images: JSON.parse(session.metadata.images),
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      console.log(`Order Placed ${session.id} in the db`);
+    })
+    .catch((err) => {
+      console.log("failed to place order", err);
+    });
+};
+
+app.post(
+  "/webhook",
+  bodyparser.raw({
+    type: "application/json",
+  }),
+  async (req, res) => {
+    const payload = req.body;
+
+    const sig = req.headers["stripe-signature"];
+    console.log("sig:", sig);
+    let event;
+
+    try {
+      event = await stripe.webhooks.constructEvent(
+        payload,
+        sig,
+        endpointsecret
+      );
+    } catch (err) {
+      console.log(`⚠️  Webhook signature verification failed.`, err.message);
+      return response.sendStatus(400);
+    }
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      fulfilOrder(session);
+    }
+
+    res.sendStatus(200);
+  }
+);
+
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.get("/orders", async (req, res) => {
+  const snapshot = await db
+    .collection("users")
+    .doc("walidhassan009@gmail.com")
+    .collection("orders")
+    .get();
+  const orders = [];
+  snapshot.forEach((doc) => {
+    orders.push(doc.data());
+  });
+
+  return res.status(200).json(orders);
+});
+
 app.post("/payment", async (req, res) => {
   const { items, email, total } = req.body;
   // console.log(items);
@@ -113,67 +193,6 @@ app.post("/payment", async (req, res) => {
     url: session.url,
   });
 });
-const fulfilOrder = async (session) => {
-  return firebaseApp
-    .firestore()
-    .collection("users")
-    .doc(session.metadata.email)
-    .collection("orders")
-    .doc(session.id)
-    .set({
-      amount: session.amount_total / 100,
-      amount_shipping: session.total_details.amount_shipping / 100,
-      images: JSON.parse(session.metadata.images),
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-    })
-    .then(() => {
-      console.log(`Order Placed ${session.id} in the db`);
-    })
-    .catch((err) => {
-      console.log("failed to place order", err);
-    });
-};
-app.post(
-  "/webhook",
-  bodyparser.raw({
-    type: "application/json",
-  }),
-  async (req, res) => {
-    const requestBuffer = await buffer(req);
-    const payload = requestBuffer.toString();
-    const sig = req.headers["stripe-signature"];
-    console.log(sig);
-    let event;
-    try {
-      event = stripe.webhooks.constructEvent(payload, sig, endpointsecret);
-    } catch (err) {
-      console.log("err");
-      return res.sendStatus(400).send(err.message);
-    }
-    switch (event.type) {
-      case "payment_intent.succeeded":
-        const paymentIntent = event.data.object;
-        fulfilOrder(paymentIntent);
-        // Then define and call a function to handle the event payment_intent.succeeded
-        break;
-      // ... handle other event types
-      default:
-        console.log(`Unhandled event type ${event.type}`);
-    }
-    // if (event.type === "payment_intent.succeeded") {
-    //   const session = event.data.object;
-    //   return fulfilOrder(session)
-    //     .then(() => {
-    //       res.sendStatus(200);
-    //     })
-    //     .then(() => {})
-    //     .catch((err) => {
-    //       res.sendStatus(400).send(`Error in fulfilling order ${err.message}`);
-    //     });
-    // }
-    res.sendStatus(200);
-  }
-);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
