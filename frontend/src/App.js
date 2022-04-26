@@ -9,7 +9,8 @@ import Register from "./Register";
 import Checkout from "./Checkout";
 import Success from "./Success";
 import Orders from "./Orders";
-
+import Verify from "./Verify";
+import Verified from "./Verified";
 function App() {
   return (
     <div className="bg-gray-100">
@@ -23,6 +24,17 @@ function App() {
           <Route exact path="/signup">
             <div className="bg-white">
               <Register />
+            </div>
+          </Route>
+          <Route exact path="/verify">
+            <div className="bg-white">
+              <Verify />
+            </div>
+          </Route>
+
+          <Route exact path="/verified">
+            <div className="bg-white">
+              <Verified />
             </div>
           </Route>
           <Route exact path="/checkout">

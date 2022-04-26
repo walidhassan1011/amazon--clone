@@ -19,6 +19,7 @@ const itemsInCart = JSON.parse(localStorage.getItem("items") || "[]");
 function Productfetching({ children }) {
   const history = useHistory();
   const [productslist, setProductslist] = useState(null);
+  const [verify, setVerify] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [adding, setadding] = useState(0);
   const [items, setitems] = useState([]);
@@ -60,17 +61,21 @@ function Productfetching({ children }) {
           progress: undefined,
         });
 
-        sendEmailVerification(auth.currentUser).catch((err) => {
-          toast.error("something went wrong with email verfication", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            setVerify(true);
+          })
+          .catch((err) => {
+            toast.error("something went wrong with email verfication", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           });
-        });
         history.push("/");
       })
       .catch((err) => {
@@ -100,7 +105,15 @@ function Productfetching({ children }) {
   async function logOut() {
     try {
       await auth.signOut();
-      console.log("signed out");
+      toast.success("Successfully sign out", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -140,6 +153,8 @@ function Productfetching({ children }) {
           searchTerm,
           setSearchTerm,
           total,
+          setVerify,
+          verify,
         }}
       >
         {children}

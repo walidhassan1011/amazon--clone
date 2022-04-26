@@ -6,10 +6,31 @@ import {
 } from "@heroicons/react/outline";
 import { UseFetching } from "../context/ProductsFetching";
 import { useHistory } from "react-router-dom";
+import { auth } from "../Firebase";
+import { sendEmailVerification } from "firebase/auth";
 function Header() {
-  const { adding, email, user, searchTerm, setSearchTerm, logOut } =
-    UseFetching();
+  const {
+    adding,
+    email,
+    user,
+    searchTerm,
+    setSearchTerm,
+    logOut,
+    verify,
+    setVerify,
+  } = UseFetching();
+  const verfymail = () => {
+    sendEmailVerification(auth.currentUser)
+      .then((res) => {
+       
+        
 
+        history.push("/verify");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const history = useHistory();
   return (
     <header>
@@ -63,6 +84,13 @@ function Header() {
                 }}
               >
                 Sigin Out
+              </p>
+            )}
+            {verify ? (
+              <p className="inline">(Verified)</p>
+            ) : (
+              <p onClick={verfymail} className="inline">
+                (verify)
               </p>
             )}
           </div>
