@@ -113,7 +113,7 @@ app.post("/orders", async (req, res) => {
 });
 
 app.post("/payment", async (req, res) => {
-  const { items, email, total } = req.body;
+  const { items, email } = req.body;
 
   const transformedItems = items.map((item) => ({
     description: item.description,
