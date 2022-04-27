@@ -12,7 +12,7 @@ function Orders() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:8282/orders", {
+    fetch("https://amazon--clonee.herokuapp.com/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

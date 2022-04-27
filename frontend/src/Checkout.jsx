@@ -22,7 +22,7 @@ function Checkout() {
       email: user.email,
       total: sumTotal,
     });
-    fetch("http://localhost:8282/payment", {
+    fetch("https://amazon--clonee.herokuapp.com/payment", {
       method: "POST",
       headers,
       body,
