@@ -25,7 +25,7 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-const endpointsecret = `whsec_2eaaa9ee72833c820fa3bd19a3f9a30f432d6d1b059e03a3fd5e64a72ec63549`;
+const endpointsecret = `whsec_UzbPz8tt1yICAL9WpwDVrFjX1elkFsBS`;
 
 const fulfilOrder = async (session) => {
   return firebaseApp
@@ -57,7 +57,7 @@ app.post(
     const payload = req.body;
 
     const sig = req.headers["stripe-signature"];
-   
+
     let event;
 
     try {
@@ -114,7 +114,7 @@ app.post("/orders", async (req, res) => {
 
 app.post("/payment", async (req, res) => {
   const { items, email, total } = req.body;
-  // console.log(items);
+
   const transformedItems = items.map((item) => ({
     description: item.description,
     quantity: 1,
@@ -192,8 +192,8 @@ app.post("/payment", async (req, res) => {
     },
     line_items: transformedItems,
     mode: "payment",
-    success_url: `http://localhost:3000/success`,
-    cancel_url: `http://localhost:3000/checkout`,
+    success_url: `https://amazon---clonee.herokuapp.com/success`,
+    cancel_url: `https://amazon---clonee.herokuapp.com/checkout`,
     metadata: {
       email,
       images: JSON.stringify(items.map((item) => item.image)),
