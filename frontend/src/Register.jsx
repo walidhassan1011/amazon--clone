@@ -5,7 +5,7 @@ import Error from "./components/Error";
 
 import { UseFetching } from "./context/ProductsFetching";
 function Register() {
-  const { setEmail, setPassword, handelRequest, error, setError } =
+  const { setEmail, setPassword, handelRequest } =
     UseFetching();
 
   return (

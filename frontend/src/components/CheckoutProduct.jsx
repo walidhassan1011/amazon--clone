@@ -19,20 +19,6 @@ function CheckoutProduct({
     return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
   const { items } = UseFetching();
-  //   const item = {
-  //     id,
-  //     title,
-  //     price,
-  //     image,
-  //     description,
-  //     category,
-  //     rating,
-  //     hasPrime,
-  //   };
-  //   const addmore = () => {
-  //     items.push(item);
-  //     console.log(items);
-  //   };
 
   return (
     <div

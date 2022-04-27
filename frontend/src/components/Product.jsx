@@ -4,7 +4,7 @@ import { UseFetching } from "../context/ProductsFetching";
 import { toast, ToastContainer } from "react-toastify";
 
 function Product({ id, title, category, image, price, description }) {
-  const { setadding, adding, setitems, items } = UseFetching();
+  const { setadding, adding, items } = UseFetching();
   const [rating] = useState(Math.floor(Math.random() * (5 - 1)) + 1);
   const [hasPrime] = useState(Math.random() < 0.5);
   const item = {

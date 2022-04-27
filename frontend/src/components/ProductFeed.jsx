@@ -4,7 +4,7 @@ import Product from "./Product";
 import { UseFetching } from "../context/ProductsFetching";
 
 function ProductFeed() {
-  const { productslist, loading, searchTerm, setSearchTerm } = UseFetching();
+  const { productslist, searchTerm} = UseFetching();
 
   return (
     <div className="grid sm:grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:-mt-52 mx-auto">

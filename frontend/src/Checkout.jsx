@@ -4,7 +4,6 @@ import CheckoutProduct from "./components/CheckoutProduct";
 import Header from "./components/Header";
 import { UseFetching } from "./context/ProductsFetching";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 const stripePromise = loadStripe(`${process.env.PUBLISH_KEY}`);

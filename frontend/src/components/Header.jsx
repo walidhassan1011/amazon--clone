@@ -11,13 +11,13 @@ import { sendEmailVerification } from "firebase/auth";
 function Header() {
   const {
     adding,
-    email,
+   
     user,
-    searchTerm,
+    
     setSearchTerm,
     logOut,
     verify,
-    setVerify,
+    
   } = UseFetching();
   const verfymail = () => {
     sendEmailVerification(auth.currentUser)

@@ -29,13 +29,7 @@ function Productfetching({ children }) {
   const [error, setError] = useState(false);
 
   const [user, setUser] = useState(null);
-  // useEffect(() => {
-  //   localStorage.setItem("adding", JSON.stringify(adding));
-  // }, [adding]);
-  // useEffect(() => {
-  //   localStorage.setItem("items", JSON.stringify(items));
-  // }, [items]);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       await axios.get("https://fakestoreapi.com/products").then((res) => {
@@ -89,14 +83,7 @@ function Productfetching({ children }) {
           progress: undefined,
         });
       });
-    // if (email === "" || password === "") {
-    //   setError(true);
-    // } else {
-    //   setError(false);
-    //   setEmail("");
-    //   setPassword("");
-    //   history.push("/");
-    // }
+  
   };
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
