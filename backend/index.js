@@ -25,7 +25,7 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-const endpointsecret = `whsec_UzbPz8tt1yICAL9WpwDVrFjX1elkFsBS`;
+const endpointsecret = `whsec_MKCNPlOuMXUYfnc6q4gPvsaUHL4erV5w`;
 
 const fulfilOrder = async (session) => {
   return firebaseApp
